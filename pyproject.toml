@@ -3,7 +3,7 @@ requires = ["flit_core >=3.2,<4"]
 build-backend = "flit_core.buildapi"
 
 [project]
-name = "bsops:_the_final"
+name = "bsops_the_final"
 version = "0.0.1"
 description = "ITU BDS MLOPS'25 - Final Project"
 authors = [
@@ -20,13 +20,13 @@ requires-python = "~=3.13.0"
 
 [tool.ruff]
 line-length = 99
-src = ["bsops:_the_final"]
-include = ["pyproject.toml", "bsops:_the_final/**/*.py"]
+src = ["bsops_the_final"]
+include = ["pyproject.toml", "bsops_the_final/**/*.py"]
 
 [tool.ruff.lint]
 extend-select = ["I"]  # Add import sorting
 
 [tool.ruff.lint.isort]
-known-first-party = ["bsops:_the_final"]
+known-first-party = ["bsops_the_final"]
 force-sort-within-sections = true
 

@@ -2,7 +2,7 @@
 # GLOBALS                                                                       #
 #################################################################################
 
-PROJECT_NAME = bsops:_the_final
+PROJECT_NAME = bsops_the_final
 PYTHON_VERSION = 3.13
 PYTHON_INTERPRETER = python
 
