@@ -3,13 +3,17 @@ from pathlib import Path
 import boto3
 from botocore.config import Config
 from botocore import UNSIGNED
-from .cfg import metadata_path, image_data_dir, test_data_dir, test_metadata_path
 import csv
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
+from .cfg import (metadata_path, 
+                  image_data_dir, 
+                  test_data_dir, 
+                  test_metadata_path,
+                  S3_ENDPOINT,
+                  S3_BUCKET,
+                  )
 
-S3_ENDPOINT = "https://itudsip.hel1.your-objectstorage.com"
-S3_BUCKET = "data"
 
 def load_image_dataset():
     """Load (image_path, label) pairs from the raw images and the metadata."""

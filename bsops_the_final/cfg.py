@@ -36,3 +36,7 @@ experiment_name = "vial_image_classification"
 model_name = "cnn_model"
 mlflow_tracking_uri = f"sqlite:///{mlflow_state_dir}/mlflow.db"
 mlflow_artifact_location = "./mlflow-state/artifacts"
+
+# S3 Configuration (Hetzner Object Storage)
+S3_ENDPOINT = "https://itudsip.hel1.your-objectstorage.com"
+S3_BUCKET = "data"
