@@ -190,3 +190,6 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# Local MLflow tracking state (sqlite db created on import of tracking.py)
+mlflow-state/
