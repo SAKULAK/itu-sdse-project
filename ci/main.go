@@ -40,3 +40,17 @@ func (m *Pipeline) Container() *dagger.Container {
 		WithWorkdir("/src").
 		WithExec([]string{"uv", "pip", "install", "--system", "--no-cache", "-r", "requirements.txt"})
 }
+
+// Training step function. Load data and preprocess data should be implemented in the future, so that they return a dagger.Directory that can be mounted into the container.
+func (m *Pipeline) Train(ctx context.Context) error {
+	// rawData := m.LoadData(key and shit maybe)
+	// processedData := m.Preprocess(rawData)
+
+	_, err := m.BaseContainer().
+		WithDirectory("/src/bsops_the_final", m.Source.Directory("bsops_the_final")).
+		WithDirectory("/src/data/processed", processedData).
+		WithExec([]string{"python", "bsops_the_final/train.py"}).
+		Sync(ctx)
+
+	return err
+}
