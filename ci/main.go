@@ -35,7 +35,7 @@ func New(
 func (m *Pipeline) BaseContainer() *dagger.Container {
 	return core.NewContainer().
 		From(m.BaseImageAddress).
-		WithDirectory("/src", m.Source, dagger.ContainerDirectoryOpts{
+		WithDirectory("/src", m.Source, dagger.ContainerWithDirectoryOpts{
 			Include: []string{"requirements*.txt"},
 		}).
 		WithWorkdir("/src").
