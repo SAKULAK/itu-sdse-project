@@ -1,8 +1,9 @@
 package pipeline
 
 import (
-	"dagger.io/dagger/core"
+	"context"
 
+	"dagger.io/dagger/core"
 	"dagger/pipeline/internal/dagger"
 )
 
@@ -14,23 +15,29 @@ type Pipeline struct {
 	Source *dagger.Directory
 }
 
+// Constructor for a new Pipeline. Defines the base image and source directory.
 func New(
 	ws *dagger.Workspace,
-	// +default="alpine:3.21"
+	// +default="ghcr.io/astral-sh/uv:python3.13-trixie-slim"
 	baseImageAddress string,
 ) *Pipeline {
 	return &Pipeline{
 		BaseImageAddress: baseImageAddress,
 		Source: ws.Directory("/", dagger.WorkspaceDirectoryOpts{
-			Exclude: []string{"**/.git", "**/.dagger", "**/vendor"},
+			Gitignore: true,
+			Include: []string{"bsops_the_final/", "tests/", "requirements*.txt", "data/", ".dvc/"},
+			Exclude: []string{"**/__pycache__", "**/.pytest_cache", ".dvc/cache", ".dvc/tmp", ".dvc/config.local"},
 		}),
 	}
 }
 
-// A container with the source mounted, ready to build on.
-func (m *Pipeline) Container() *dagger.Container {
+// Base container for the pipeline. Installs dependencies from requirements.txt and sets the working directory to /src.
+func (m *Pipeline) BaseContainer() *dagger.Container {
 	return core.NewContainer().
 		From(m.BaseImageAddress).
-		WithDirectory("/src", m.Source).
-		WithWorkdir("/src")
+		WithDirectory("/src", m.Source, dagger.ContainerDirectoryOpts{
+			Include: []string{"requirements*.txt"},
+		}).
+		WithWorkdir("/src").
+		WithExec([]string{"uv", "pip", "install", "--system", "--no-cache", "-r", "requirements.txt"})
 }
