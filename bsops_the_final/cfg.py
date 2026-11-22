@@ -41,6 +41,12 @@ drift_baseline_stats_path = artifact_dir + "/drift_baseline_stats.json"
 class_names_path = artifact_dir + "/class_names.json"
 image_statistics_path = artifact_dir + "/image_statistics.json"
 inference_log_path = artifact_dir + "/inference_log.json"
+
+# MLflow - we log to a local sqlite db so no tracking server has to be running
+experiment_name = "vial_image_classification"
+model_name = "cnn_model"
+mlflow_tracking_uri = f"sqlite:///{mlflow_state_dir}/mlflow.db"
+mlflow_artifact_location = "./mlflow-state/artifacts"
 test_metadata_path = "./data/test/metadata.csv"
 
 # MLflow - we log to a local sqlite db so no tracking server has to be running
