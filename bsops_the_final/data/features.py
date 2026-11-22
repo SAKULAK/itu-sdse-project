@@ -3,7 +3,7 @@
 import numpy as np
 from torchvision import transforms
 
-from ..config import image_size, transform_mean, transform_std
+from ..cfg import image_size, transform_mean, transform_std
 
 def define_transforms():
     print("Defining image transforms...")

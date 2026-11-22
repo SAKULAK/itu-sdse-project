@@ -2,7 +2,7 @@ from torch.utils.data import DataLoader, Dataset
 import numpy as np
 import torch
 
-from ..config import batch_size
+from ..cfg import batch_size
 from .features import define_transforms
 
 
