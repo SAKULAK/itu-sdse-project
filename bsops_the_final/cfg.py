@@ -41,6 +41,9 @@ drift_baseline_stats_path = artifact_dir + "/drift_baseline_stats.json"
 class_names_path = artifact_dir + "/class_names.json"
 image_statistics_path = artifact_dir + "/image_statistics.json"
 inference_log_path = artifact_dir + "/inference_log.json"
+test_metadata_path = "./data/test/metadata.csv"
+
+# MLflow - we log to a local sqlite db so no tracking server has to be running
 
 # MLflow logs to a local sqlite db, so no tracking server has to be running
 experiment_name = "vial_image_classification"
@@ -48,6 +51,9 @@ model_name = "cnn_model"
 mlflow_tracking_uri = f"sqlite:///{mlflow_state_dir}/mlflow.db"
 mlflow_artifact_location = "./mlflow-state/artifacts"
 
+# S3 Configuration (Hetzner Object Storage)
+S3_ENDPOINT = "https://itudsip.hel1.your-objectstorage.com"
+S3_BUCKET = "data"
 # Jupyter starts us in notebooks/ when the notebook is opened from there -
 # everything below assumes we are running from the project root
 if os.path.basename(os.getcwd()) == "notebooks":
