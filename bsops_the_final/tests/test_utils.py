@@ -9,7 +9,7 @@ from unittest.mock import patch
 
 import torch
 
-from bsops_the_final import utils
+from bsops_the_final.data import utils
 
 
 class TestCountClasses(unittest.TestCase):

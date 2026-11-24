@@ -6,7 +6,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 from unittest.mock import MagicMock, call, patch
 
-from bsops_the_final import data
+from bsops_the_final.data import data
 
 
 class TestGetS3KeyFromUrl(unittest.TestCase):

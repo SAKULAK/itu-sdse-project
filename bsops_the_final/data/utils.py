@@ -1,7 +1,7 @@
 import numpy as np
 import json
 from pathlib import Path
-from .cfg import class_names_path
+from ..cfg import class_names_path
 
 
 def count_classes(labels):

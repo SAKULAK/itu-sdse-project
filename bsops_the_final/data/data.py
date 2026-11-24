@@ -6,7 +6,7 @@ from botocore import UNSIGNED
 import csv
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-from .cfg import (metadata_path, 
+from ..cfg import (metadata_path, 
                   image_data_dir, 
                   test_data_dir, 
                   test_metadata_path,
