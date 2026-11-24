@@ -1,6 +1,7 @@
 package pipeline
 
 import (
+	"context"
 	"dagger/pipeline/internal/dagger"
 
 	"dagger.io/dagger/core"
@@ -46,9 +47,9 @@ func (m *Pipeline) Train(ctx context.Context) error {
 	// rawData := m.LoadData(key and shit maybe)
 	// processedData := m.Preprocess(rawData)
 
-	_, err := m.BaseContainer().
+	_, err := m.Container().
 		WithDirectory("/src/bsops_the_final", m.Source.Directory("bsops_the_final")).
-		WithDirectory("/src/data/processed", processedData).
+		// WithDirectory("/src/data/processed", processedData).
 		WithExec([]string{"python", "bsops_the_final/train.py"}).
 		Sync(ctx)
 
