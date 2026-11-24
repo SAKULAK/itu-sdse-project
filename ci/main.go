@@ -42,6 +42,23 @@ func (m *Pipeline) Container() *dagger.Container {
 		WithExec([]string{"uv", "pip", "install", "--system", "--no-cache", "-r", "requirements.txt"})
 }
 
+func (m *Pipeline) LoadData() *dagger.Directory {
+
+	container := m.Container().
+		WithDirectory("/src/bsops_the_final", m.Source.Directory("bsops_the_final")).
+		WithDirectory("/src/data", m.Source.Directory("data")).
+		WithDirectory("/src/.dvc", m.Source.Directory(".dvc")).
+		WithExec([]string{"dvc", "config", "--local", "core.no_scm", "true"}).
+		WithExec([]string{"dvc", "pull",
+			"data/images/metadata.csv.dvc",
+			"data/test/metadata.csv.dvc",
+			"-v"}).
+		WithExec([]string{"python", "-c",
+			"from bsops_the_final.data.data import pull_data_from_dvc; pull_data_from_dvc()"})
+
+	return container.Directory("/src/data")
+}
+
 // Training step function. Load data and preprocess data should be implemented in the future, so that they return a dagger.Directory that can be mounted into the container.
 func (m *Pipeline) Train(ctx context.Context) error {
 	// rawData := m.LoadData(key and shit maybe)
