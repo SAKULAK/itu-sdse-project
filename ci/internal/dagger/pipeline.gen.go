@@ -42,7 +42,7 @@ func (r *Pipeline) BaseImageAddress(ctx context.Context) (string, error) {
 	return response, q.Execute(ctx)
 }
 
-// A container with the source mounted, ready to build on.
+// Base container for the pipeline. Installs dependencies from requirements.txt and sets the working directory to /src.
 func (r *Pipeline) Container() *Container {
 	q := r.query.Select("container")
 
@@ -107,7 +107,7 @@ func (r *Pipeline) UnmarshalJSON(bs []byte) error {
 // PipelineOpts contains options for Query.Pipeline
 type PipelineOpts struct {
 
-	// Default: "alpine:3.21"
+	// Default: "ghcr.io/astral-sh/uv:python3.13-trixie-slim"
 	BaseImageAddress string
 }
 

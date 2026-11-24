@@ -41,7 +41,7 @@ type functionSpec struct {
 }
 
 var functions = []functionSpec{
-	{Name: "pipeline", Receiver: "Pipeline", FnName: "", Args: map[string]argumentSpec{"ws": {Required: false, Default: "", Encoding: "string"}, "baseImageAddress": {Required: false, Default: "\"alpine:3.21\"", Encoding: "string"}}},
+	{Name: "pipeline", Receiver: "Pipeline", FnName: "", Args: map[string]argumentSpec{"ws": {Required: false, Default: "", Encoding: "string"}, "baseImageAddress": {Required: false, Default: "\"ghcr.io/astral-sh/uv:python3.13-trixie-slim\"", Encoding: "string"}}},
 	{Name: "container", Receiver: "Pipeline", FnName: "Container", Args: map[string]argumentSpec{}},
 }
 

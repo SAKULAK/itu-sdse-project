@@ -1,10 +1,9 @@
 package pipeline
 
 import (
-	"context"
+	"dagger/pipeline/internal/dagger"
 
 	"dagger.io/dagger/core"
-	"dagger/pipeline/internal/dagger"
 )
 
 type Pipeline struct {
@@ -25,17 +24,17 @@ func New(
 		BaseImageAddress: baseImageAddress,
 		Source: ws.Directory("/", dagger.WorkspaceDirectoryOpts{
 			Gitignore: true,
-			Include: []string{"bsops_the_final/", "tests/", "requirements*.txt", "data/", ".dvc/"},
-			Exclude: []string{"**/__pycache__", "**/.pytest_cache", ".dvc/cache", ".dvc/tmp", ".dvc/config.local"},
+			Include:   []string{"bsops_the_final/", "tests/", "requirements*.txt", "data/", ".dvc/"},
+			Exclude:   []string{"**/__pycache__", "**/.pytest_cache", ".dvc/cache", ".dvc/tmp", ".dvc/config.local"},
 		}),
 	}
 }
 
 // Base container for the pipeline. Installs dependencies from requirements.txt and sets the working directory to /src.
-func (m *Pipeline) BaseContainer() *dagger.Container {
+func (m *Pipeline) Container() *dagger.Container {
 	return core.NewContainer().
 		From(m.BaseImageAddress).
-		WithDirectory("/src", m.Source, dagger.ContainerWithDirectoryOpts{
+		WithDirectory("/src", m.Source, core.ContainerWithDirectoryOpts{
 			Include: []string{"requirements*.txt"},
 		}).
 		WithWorkdir("/src").

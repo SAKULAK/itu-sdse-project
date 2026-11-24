@@ -9,6 +9,7 @@ module = "go-sdk"
 
 [modules.pipeline]
 source = "ci"
+main = true
 
 [sdks.go.scopes.ci]
 is-module = true

@@ -33,15 +33,16 @@ type Entrypoint implements ModuleEntrypoint {
       typeDef.withObject("Pipeline", sourceMap: sourceMap("main.go", 9, 6))
         .withFunction(
           function("Container", typeDef.withObject("Container"))
-            .withDescription("A container with the source mounted, ready to build on.")
-            .withSourceMap(sourceMap("main.go", 31, 1))
+            .withDescription("Base container for the pipeline. Installs dependencies from requirements.txt and sets the working directory to /src.")
+            .withSourceMap(sourceMap("main.go", 34, 1))
         )
         .withField("BaseImageAddress", typeDef.withKind(TypeDefKind.STRING_KIND), description: "Image the build runs on.", sourceMap: sourceMap("main.go", 11, 2))
         .withConstructor(
           function("", typeDef.withObject("Pipeline"))
-            .withSourceMap(sourceMap("main.go", 17, 1))
-            .withArg("ws", typeDef.withObject("Workspace"), sourceMap: sourceMap("main.go", 18, 2))
-            .withArg("baseImageAddress", typeDef.withKind(TypeDefKind.STRING_KIND), defaultValue: ("\"alpine:3.21\"" :: Dagger.JSON!), sourceMap: sourceMap("main.go", 20, 2))
+            .withDescription("Constructor for a new Pipeline. Defines the base image and source directory.")
+            .withSourceMap(sourceMap("main.go", 18, 1))
+            .withArg("ws", typeDef.withObject("Workspace"), sourceMap: sourceMap("main.go", 19, 2))
+            .withArg("baseImageAddress", typeDef.withKind(TypeDefKind.STRING_KIND), defaultValue: ("\"ghcr.io/astral-sh/uv:python3.13-trixie-slim\"" :: Dagger.JSON!), sourceMap: sourceMap("main.go", 21, 2))
         )
     ]
   }
