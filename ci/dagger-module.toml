@@ -1,0 +1,6 @@
+name = "pipeline"
+include = []
+
+[entrypoint]
+  kind = "dang"
+  source = "./internal/dagger/entrypoint"

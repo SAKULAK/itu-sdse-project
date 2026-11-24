@@ -1,0 +1,16 @@
+[modules.ruff]
+source = "dagger.io/python/ruff"
+
+[modules.go-sdk]
+source = "dagger.io/sdk/go"
+
+[sdks.go]
+module = "go-sdk"
+
+[modules.pipeline]
+source = "ci"
+main = true
+
+[sdks.go.scopes.ci]
+is-module = true
+name = "pipeline"
