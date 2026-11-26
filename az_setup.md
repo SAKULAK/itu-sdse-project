@@ -13,57 +13,35 @@ curl -fsSL 'https://azurecliprod.blob.core.windows.net/$root/deb_install.sh' | s
 ```
 
 
-Login using browser
+Login (one-time setup)
+
+Creates a service principal scoped to the resource group, registers the providers, and writes
+its credentials to `.env.azure` (gitignored). Opens a browser login if you aren't logged in yet.
+Run from Git Bash on Windows.
 ```console
-az login
+./scripts/azure/bootstrap-sp.sh
 ```
 
-Add extension and register namespaces
+Login (every time after that, no browser)
+
+Uses `AZURE_CLIENT_ID`, `AZURE_CLIENT_SECRET`, `AZURE_TENANT_ID`, `AZURE_SUBSCRIPTION_ID` from the
+environment (e.g. CI secrets), falling back to `.env.azure`.
 ```console
-az extension add --name containerapp --upgrade
-az provider register --namespace Microsoft.App
-az provider register --namespace Microsoft.OperationalInsights
+./scripts/azure/login.sh
 ```
 
-Create RG in the right region
-```console
-RG=mlops-itu-rg
-ENV=mlops-itu-env
-LOC=norwayeast
+Deploy (every release, after the image is pushed to ghcr.io)
 
-az group create --name $RG --location $LOC
-az containerapp env create --name $ENV --resource-group $RG --location $LOC
+Logs in via `login.sh`, creates the Container Apps environment if it doesn't exist yet, fills the
+placeholders in `infra/azure/app.yaml`, and creates or updates the app. Safe to re-run.
+The GHCR package must be public so Azure can pull it.
+```console
+./scripts/azure/deploy.sh <your-github-user> <your-image-tag>
+./scripts/azure/deploy.sh <your-github-user> <your-image-tag> --dry-run   # just print the rendered spec
 ```
 
-Substitute infra fields with az query output
-```console
-SUB=$(az account show --query id -o tsv)
-OWNER=<your-github-user-lowercase>
-TAG=<your-image-tag>
+Defaults: resource group `mlops-itu-rg`, region `norwayeast`, environment `mlops-itu-env`,
+app `mlops-itu-jtk`. Override with `AZ_RG`, `AZ_LOC`, `AZ_ENV`, `AZ_APP`.
 
-sed \
-  -e "s/__OWNER__/$OWNER/" \
-  -e "s/__TAG__/$TAG/" \
-  -e "s/__SUBSCRIPTION_ID__/$SUB/" \
-  -e "s/__RESOURCE_GROUP__/$RG/" \
-  -e "s/__ENVIRONMENT__/$ENV/" \
-  ./infra/azure/app.yml > /tmp/app.rendered.yml
-
-az containerapp create \
-  --name mlops-itu-jtk \
-  --resource-group $RG \
-  --yaml /tmp/app.rendered.yml  
-```
-
-If new image needs to be pushed here's the update command
-```console
-RG=mlops-itu-rg
-OWNER=<your-github-user-lowercase>
-NEW_TAG=<your-new-tag>   # e.g. the commit SHA
-
-az containerapp update \
-  --name mlops-itu-jtk \
-  --resource-group $RG \
-  --image ghcr.io/$OWNER/model-serve:$NEW_TAG
-```
-
+In CI (GitHub Actions), store `AZURE_CLIENT_ID`, `AZURE_CLIENT_SECRET`, `AZURE_TENANT_ID`,
+`AZURE_SUBSCRIPTION_ID` as repository secrets, expose them as env vars, and run the same command.
