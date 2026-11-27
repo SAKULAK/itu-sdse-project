@@ -43,6 +43,11 @@ func (m *Pipeline) Container() *dagger.Container {
 }
 
 // Training step function. Load data and preprocess data should be implemented in the future, so that they return a dagger.Directory that can be mounted into the container.
+//
+// Returns everything later stages need, laid out like the project root so it can be
+// mounted straight at /src:
+//   - mlflow-state/  MLflow tracking db + logged models (model selection, promotion, export)
+//   - artifacts/     model_results.json (deployment) and drift_baseline_stats.json (serving)
 func (m *Pipeline) Train(ctx context.Context) (*dagger.Directory, error) {
 	// rawData := m.LoadData(key and shit maybe)
 	// processedData := m.Preprocess(rawData)
@@ -56,5 +61,7 @@ func (m *Pipeline) Train(ctx context.Context) (*dagger.Directory, error) {
 		return nil, err
 	}
 
-	return ctr.Directory("/src/mlflow-state"), nil
+	return ctr.Directory("/src").Filter(core.DirectoryFilterOpts{
+		Include: []string{"mlflow-state/", "artifacts/"},
+	}), nil
 }
