@@ -43,15 +43,18 @@ func (m *Pipeline) Container() *dagger.Container {
 }
 
 // Training step function. Load data and preprocess data should be implemented in the future, so that they return a dagger.Directory that can be mounted into the container.
-func (m *Pipeline) Train(ctx context.Context) error {
+func (m *Pipeline) Train(ctx context.Context) (*dagger.Directory, error) {
 	// rawData := m.LoadData(key and shit maybe)
 	// processedData := m.Preprocess(rawData)
 
-	_, err := m.Container().
+	ctr, err := m.Container().
 		WithDirectory("/src/bsops_the_final", m.Source.Directory("bsops_the_final")).
-		// WithDirectory("/src/data/processed", processedData).
-		WithExec([]string{"python", "bsops_the_final/train.py"}).
+		// WithDirectory("/data/processed", processedData).
+		WithExec([]string{"python", "-m", "bsops_the_final.train"}).
 		Sync(ctx)
+	if err != nil {
+		return nil, err
+	}
 
-	return err
+	return ctr.Directory("/src/mlflow-state"), nil
 }
