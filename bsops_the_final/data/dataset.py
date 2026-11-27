@@ -2,7 +2,7 @@ from torch.utils.data import DataLoader, Dataset
 import numpy as np
 import torch
 
-from ..cfg import batch_size
+from ..cfg import batch_size, random_state
 from .features import define_transforms
 
 
@@ -33,7 +33,7 @@ class GlassVialDataset(Dataset):
 
         return image, label
 
-def split_dataset(image_dataset, train_ratio=0.70, val_ratio=0.15, test_ratio=0.15, random_seed=42):
+def split_dataset(image_dataset, train_ratio=0.70, val_ratio=0.15, test_ratio=0.15, random_seed=random_state):
     """Stratified split so both classes keep the same balance in every set."""
     print(f"\nSplitting dataset into train ({train_ratio}), val ({val_ratio}), test ({test_ratio})...")
 

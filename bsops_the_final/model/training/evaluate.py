@@ -11,8 +11,9 @@ import numpy as np
 import torch
 import mlflow
 
+from ...cfg import threshold
 
-def evaluate_cnn_model(model, test_loader, threshold=0.5, device=None, verbose=False):
+def evaluate_cnn_model(model, test_loader, threshold=threshold, device=None, verbose=False):
     """Evaluate the model on the test set: accuracy, F1, precision, recall, ROC-AUC."""
     if verbose:
         print(f"\n{'='*60}")
