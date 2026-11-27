@@ -7,7 +7,19 @@ from torch import optim
 from torch import nn
 import numpy as np
 
-def train_cnn_model(train_loader, val_loader, num_epochs=5, learning_rate=0.0003, threshold=0.5, early_stop_patience=2, scheduler_patience=3, device=None, random_seed=None, verbose=False):
+from ...cfg import (
+    num_epochs,
+    batch_size,
+    learning_rate,
+    threshold,
+    early_stop_patience,
+    scheduler_patience,
+    random_state,
+)
+
+def train_cnn_model(train_loader, val_loader, 
+                    num_epochs=num_epochs, 
+                    learning_rate=learning_rate, threshold=threshold, early_stop_patience=early_stop_patience, scheduler_patience=scheduler_patience, device=None, random_seed=None, verbose=False):
     """Train the SimpleCNN model on glass vial images."""
     if random_seed is None:
         random_seed = torch.seed()
@@ -179,7 +191,7 @@ def train_cnn_model(train_loader, val_loader, num_epochs=5, learning_rate=0.0003
 
     return model, history
 
-def tune_threshold(model, val_loader, threshold = 0.5, device=None, threshold_range=None, verbose=False):
+def tune_threshold(model, val_loader, threshold = threshold, device=None, threshold_range=None, verbose=False):
     """Tune the classification threshold to maximize macro F1 on the validation set.
 
     Macro-F1 is used because maximizing the positive-class F1 alone rewards

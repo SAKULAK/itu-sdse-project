@@ -6,16 +6,13 @@ from botocore import UNSIGNED
 import csv
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-from .cfg import (metadata_path, 
-                  image_data_dir, 
-                  test_data_dir, 
-                  test_metadata_path,
+from ..cfg import (
                   S3_ENDPOINT,
                   S3_BUCKET,
                   )
 
 
-def load_image_dataset():
+def load_image_dataset(image_data_dir, metadata_path):
     """Load (image_path, label) pairs from the raw images and the metadata."""
     print(f"Loading image dataset from {image_data_dir}")
     print(f"Using metadata from {metadata_path}")
@@ -115,7 +112,7 @@ def download_files_from_metadata(metadata_path, output_dir, prefix=""):
 
     print(f"Downloaded {downloaded_count} images, skipped {skipped_count} existing, failed {failed_count}")
 
-def pull_data_from_dvc():
+def pull_data_from_dvc(metadata_path, image_data_dir, test_metadata_path, test_data_dir):
     """Pull the training and test images listed in the metadata from the object store."""
     download_files_from_metadata(metadata_path, image_data_dir, "images/raw/")
     download_files_from_metadata(test_metadata_path, test_data_dir, "test/")

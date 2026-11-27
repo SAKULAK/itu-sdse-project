@@ -18,7 +18,7 @@ import time
 import pandas as pd
 import requests
 
-from ..cfg import drift_default_days, inference_log_path, port
+from ..cfg import drift_default_days, inference_log_path, port, test_data_dir, test_metadata_path
 from .drift import detect_drift, load_baseline_stats, load_inference_logs
 
 
@@ -37,12 +37,12 @@ def wait_until_ready(base_url):
 
 
 def test_endpoint(base_url):
-    test_metadata = pd.read_csv("data/test/metadata.csv")
+    test_metadata = pd.read_csv(test_metadata_path)
     sample_file = test_metadata.iloc[0]["filename"]
     sample_label = int(test_metadata.iloc[0]["class"])
     print(f"Sample image: {sample_file} (label={sample_label})")
 
-    with open(Path("data/test") / sample_file, "rb") as f:
+    with open(Path(test_data_dir) / sample_file, "rb") as f:
         img_b64 = base64.b64encode(f.read()).decode()
 
     payload = {"instances": [img_b64]}

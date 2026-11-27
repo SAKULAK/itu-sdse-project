@@ -15,7 +15,7 @@ import torch
 class SimpleLoggingWrapper(mlflow.pyfunc.PythonModel):
     """Wrapper that logs inference requests and returns predictions."""
 
-    def __init__(self, model_path: str | Path, log_path: str | Path, image_size: tuple[int, int], transform_mean: list[float], transform_std:list[float], threshold: float, model=None, verbose=False):
+    def __init__(self, log_path: str | Path, image_size: tuple[int, int], transform_mean: list[float], transform_std:list[float], threshold: float, model=None, model_path: str | Path | None = None, verbose=False):
         self.model = model
         self.model_path = model_path
         self.log_path = Path(log_path)

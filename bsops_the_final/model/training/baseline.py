@@ -1,7 +1,9 @@
 import torch
 import numpy as np
 
-def compute_baseline_statistics(model, data_loader, device=None, feature_layer="fc1", threshold=0.5, verbose=False):
+from ...cfg import threshold
+
+def compute_baseline_statistics(model, data_loader, device=None, feature_layer="fc1", threshold=threshold, verbose=False):
     """Compute baseline statistics for drift detection from a dataset."""
     if verbose:
         print(f"\nComputing baseline statistics for drift detection...")
